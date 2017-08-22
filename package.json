@@ -1,0 +1,22 @@
+{
+  "name": "twitter-bot",
+  "version": "1.0.0",
+  "description": "bot for twitter",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hafielyr/twitter-bot.git"
+  },
+  "author": "Hafieludin Yusuf Rizana",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hafielyr/twitter-bot/issues"
+  },
+  "homepage": "https://github.com/hafielyr/twitter-bot#readme",
+  "dependencies": {
+    "twitter": "^1.7.1"
+  }
+}
