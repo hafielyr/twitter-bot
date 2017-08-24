@@ -1,64 +1,76 @@
 var Twitter = require('twitter');
 
+
 var config = require('./config.js');
 
 var T = new Twitter(config);
 
 
+var stream = T.stream('user')
 
-// Set up your search parameters
+function down() {
+  stream = T.stream('user');
+stream.on('direct_message', function (eventMsg) {
+  var dm = eventMsg.direct_message.text;
+  let tweet = {
+    status: dm
+  }
+  T.post('statuses/update', tweet, function(err, data, response) {       
+    if(err){
 
+      console.log(err[0].message);
+
+    }
+    else{
+      console.log("success");
+      
+
+    }
+
+  });
+}) 
+}
+down();
+//search tweet
+/*
 var params = {
 
-  q: '#nodejs',
+  q: '"cari tiket","Cari tiket" -filter:retweets',
 
-  count: 10,
+  count: 20,
 
-  result_type: 'recent',
+  result_type: 'mixed',
 
-  lang: 'en'
+  lang: 'id'
 
 }
-
-
-
-// Initiate your search using the above paramaters
-
 T.get('search/tweets', params, function(err, data, response) {
 
-  // If there is no error, proceed
-
   if(!err){
-
-    // Loop through the returned tweets
-
     for(let i = 0; i < data.statuses.length; i++){
+     
+      //favorite tweet
+      //let id = { id: data.statuses[i].id_str }
+      //T.post('favorites/create', id, function(err, response){
 
-      // Get the tweet Id from the returned data
-
-      let id = { id: data.statuses[i].id_str }
-
-      // Try to Favorite the selected Tweet
-
-      T.post('favorites/create', id, function(err, response){
-
-        // If the favorite fails, log the error message
-
+      //mention tweet
+      var screenName=data.statuses[i].user.screen_name;
+      let tweet = {
+        status: '@'+screenName+' halo, kamu bisa cek tiket yang kamu cari di tiket.com'
+      }
+      T.post('statuses/update', tweet, function(err, data, response) {       
         if(err){
 
           console.log(err[0].message);
 
         }
-
-        // If the favorite is successful, log the url of the tweet
-
         else{
 
           let username = response.user.screen_name;
 
           let tweetId = response.id_str;
 
-          console.log('Favorited: ', `https://twitter.com/${username}/status/${tweetId}`)
+          console.log('Replied: ', `https://twitter.com/${username}/status/${tweetId}`)
 
         }
 
@@ -73,3 +85,16 @@ T.get('search/tweets', params, function(err, data, response) {
   }
 
 })
+*/
+function send_twitter_dm(username, message){
+  T.post('direct_messages/new', {
+    screen_name: username,
+    text: message
+  }, 
+  function(err, data, response){
+    if (err){
+      console.log('Error!');
+      console.log(err);
+    }
+  });  
+}
